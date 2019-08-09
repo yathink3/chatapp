@@ -1,4 +1,5 @@
-
+//importing required modules
+require('dotenv').config()
 const express = require('express');
 const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
@@ -8,7 +9,7 @@ const routes = require('./routes/routes');
 //create express app
 const app = express();
 
-// parse requests of content-type - application/json
+// parse requests of content-type -json
 app.use(bodyParser.json())
 
 // parse requests of content-type urlencoded
@@ -23,10 +24,11 @@ app.use(expressValidator());
 app.use('/',routes);
 
 // Connecting to the database
-mongoose.connect('mongodb://localhost:27017/chatapp', {
+mongoose.connect(process.env.MONGO_HOST, {
     useNewUrlParser: true
 })
 
+//connection detailes
 mongoose.connection.on("connected", () => console.log("connected succefully"))
 
 mongoose.connection.on("disconnected", () => console.log("disconnected successfully"))
@@ -35,8 +37,8 @@ mongoose.connection.on("error", () => console.log("error occured while connectin
 
 
 // listen for requests
-app.listen(3000, () => {
-    console.log("Server is listening on port 3000");
+app.listen(process.env.SERVER_PORT, () => {
+    console.log("Server is listening on port "+process.env.SERVER_PORT);
 });
 
 

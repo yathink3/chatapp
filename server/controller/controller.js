@@ -1,5 +1,12 @@
+//importing paths
 const userService = require('../service/service');
 const util = require('../utility')
+
+ /**
+  * @desc register the user detailes and validating the detailes
+  * @param  -req,res - it contains the req and respond json file
+  * @return json respond messege- data or error
+*/
 exports.register = (req, res) => {
     console.log("data register");
     req.checkBody('firstName', 'Invalid first name').notEmpty().isAlpha();
@@ -19,6 +26,12 @@ exports.register = (req, res) => {
         })
     }
 }
+
+/**
+  * @desc login user  and validating the detailes
+  * @param  -req,res - it contains the req and respond json file
+  * @return json respond messege- data or error
+*/
 exports.login = (req, res) => {
     console.log("login on go");
     req.checkBody('email', 'Invalid email').notEmpty().isEmail();
@@ -36,6 +49,12 @@ exports.login = (req, res) => {
         })
     }
 }
+
+/**
+  * @desc forgot user password and validating the detailes
+  * @param  -req,res - it contains the req and respond json file
+  * @return json respond messege- data or error
+*/
 exports.forgot = (req, res) => {
     console.log("forgot on go");
     req.checkBody('email', 'Invalid email').notEmpty().isEmail();
@@ -55,13 +74,18 @@ exports.forgot = (req, res) => {
                 const payload = {
                     user_id: response.data._id
                 }
-                const url = util.getRandomTokenUrl(payload);
+                const url = process.env.URL+'forgot/' + util.getRandomToken(payload).token;
                 res.status(200).send(url);
-                util.sendEmail(url, response.data.email);
+                util.sendEmail(response.data.email,'mail verification','verification link:\n' + url) 
             }
         })
     }
 }
+/**
+  * @desc reset user password and validating the detailes
+  * @param  -req,res - it contains the req and respond json file
+  * @return json respond messege- data or error
+*/
 exports.resetPassword = (req, res) => {
     console.log("reset on go");
     req.checkBody('password', 'Invalid possword').notEmpty().len(8, 30);
