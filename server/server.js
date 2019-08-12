@@ -1,3 +1,12 @@
+/********************************************************************************************************************
+ * @Execution : default node : cmd> chatapp
+ * @Purpose : to build the chat app
+ * @description :chatapp backend
+ * @overview : chatapp backend
+ * @author : yathin k <yathink3@gmail.com>
+ * @version : 1.0
+ * @since : 08-aug-2019
+ *******************************************************************************************************************/
 //importing required modules
 require('dotenv').config()
 const express = require('express');
@@ -22,7 +31,7 @@ app.use(expressValidator());
 
 //rediricting to route
 app.use('/',routes);
-
+app.use(express.static('../client'));
 // Connecting to the database
 mongoose.connect(process.env.MONGO_HOST, {
     useNewUrlParser: true
